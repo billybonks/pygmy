@@ -1,5 +1,5 @@
 {
-  "name": "pgymy",
+  "name": "pygmy",
   "version": "0.0.1",
   "description": "Wrapper library for tradegecko api",
   "main": "pygmyjs",
