@@ -1,5 +1,9 @@
-request = require('./../request')
 route = '/products'
-exports.all = function (){
-  request.get({path:route});
+
+module.exports = function(request){
+  return {
+    all:function(){
+      return request.get({path:route});
+    }
+  }
 }

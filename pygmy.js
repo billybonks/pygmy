@@ -1,7 +1,8 @@
 'use strict';
-module.exports = function(token,secret,secret){
+
+module.exports = function(params){
+  var request = require('./request')(params.token,params.cleintId,params.secret)
   return {
-    companies: require('./routes/companies');
-    products: require('./routes/products');
+    products: require('./routes/products')(request)
   }
 }
