@@ -1,0 +1,24 @@
+{
+  "name": "pgymy",
+  "version": "0.0.1",
+  "description": "Wrapper library for tradegecko api",
+  "scripts": {
+    "test": "test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/billybonks/pgymy.git"
+  },
+  "author": "Sebastien Stettler",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/billybonks/pgymy/issues"
+  },
+  "homepage": "https://github.com/billybonks/pgymy",
+  "dependencies": {
+    "lodash": "^3.4.0",
+    "request": "^2.53.0",
+    "rsvp": "^3.0.17",
+    "unirest": "^0.4.0"
+  }
+}
