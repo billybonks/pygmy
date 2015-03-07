@@ -2,6 +2,7 @@
   "name": "pgymy",
   "version": "0.0.1",
   "description": "Wrapper library for tradegecko api",
+  "main": "pygmyjs",
   "scripts": {
     "test": "test.js"
   },
