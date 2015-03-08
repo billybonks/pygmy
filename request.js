@@ -4,12 +4,17 @@ var https = require('https');
 var StringDecoder = require('string_decoder').StringDecoder;
 module.exports = function(token,id,secret){
   return {
-    get:get
+    get:get,
+    where:where
+  }
+
+  function where (route,params){
+    route = route+'?'+serialize(params)
+    return this.get({path:route});
   }
 
   function get (params){
     return new RSVP.Promise(function(resolve,reject){
-      console.log('route')
       var options = {
         host: 'api.tradegecko.com',
         method: 'GET',
@@ -46,5 +51,14 @@ module.exports = function(token,id,secret){
         //conn refused
       });
     });
+  }
+
+  function serialize(obj) {
+    var str = [];
+    for(var p in obj)
+      if (obj.hasOwnProperty(p)) {
+        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+      }
+    return str.join("&");
   }
 }
