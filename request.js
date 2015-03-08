@@ -1,7 +1,6 @@
 var _ = require('lodash');
 var RSVP = require('rsvp');
 var https = require('https');
-var StringDecoder = require('string_decoder').StringDecoder;
 module.exports = function(token,id,secret){
   return {
     get:get,
@@ -22,8 +21,9 @@ module.exports = function(token,id,secret){
           Authorization: 'Bearer '+ token
         }
       };
-
+      console.log(params)
       var req = https.request(_.merge(options,params), function(res) {
+        var error
         switch(res.statusCode){
           case 200:
             var data = '';
@@ -35,10 +35,13 @@ module.exports = function(token,id,secret){
             })
             break;
           case 401:
-            reject()//unauthed
+            reject({message:'Unauthorized',statusCode:401});
+            break;
+          case 400:
+            reject({message:'Bad Request',statusCode:400});
             break;
           case 500:
-            reject()//internal server error
+            reject({message:'Internal Server Error',statusCode:500});
             break;
         }
 

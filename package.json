@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/billybonks/pgymy",
   "dependencies": {
+    "inflection": "^1.6.0",
     "lodash": "^3.4.0",
     "request": "^2.53.0",
     "rsvp": "^3.0.17",
