@@ -1,5 +1,6 @@
 var _ = require('lodash');
 module.exports = function(route,request){
+    var _path='/'+route;
     var _data={};
     return {
       isDirty:false,
@@ -21,9 +22,9 @@ module.exports = function(route,request){
       },
       save:function(){
         if(this.id){
-          //post
-        }else{
           //put
+        }else{
+          return request.post(_data,_path)
         }
       },
       raw:function(){
