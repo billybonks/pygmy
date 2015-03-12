@@ -1,7 +1,6 @@
 var _ = require('lodash');
 var RSVP = require('rsvp');
 var https = require('https');
-var Buffer = require('buffer')
 module.exports = function(token,id,secret,host){
   return {
     get:get,
@@ -34,7 +33,16 @@ module.exports = function(token,id,secret,host){
   }
 //Buffer.byteLength(data)
   function post(data,path){
+    return update.call(this,data,path,'POST');
+  }
+
+  function put(data,path){
+    return update.call(this,data,path,'PUT');
+  }
+
+  function update(data,path,method){
     var _self = this;
+    console.log(this)
     return new RSVP.Promise(function(resolve,reject){
       var headers ={method: 'POST',
                     path:path,
@@ -55,7 +63,6 @@ module.exports = function(token,id,secret,host){
       });
     });
   }
-
   function createRequest(params,resolve,reject){
     return https.request(params, function(res) {
       var error

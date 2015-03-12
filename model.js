@@ -1,6 +1,6 @@
 var _ = require('lodash');
-module.exports = function(route,request){
-    var _path='/'+route;
+var RSVP = require('rsvp');
+module.exports = function(route){
     var _data={};
     return {
       isDirty:false,
@@ -22,13 +22,20 @@ module.exports = function(route,request){
       },
       save:function(){
         if(this.id){
-          //put
+          console.log('update')
+          return route.update(this)
         }else{
-          return request.post(_data,_path)
+          return route.create(this)
         }
       },
       raw:function(){
         return _data;
+      },
+      merge:function(params){
+        console.log(params)
+        _.merge(_data,params);
+        console.log(_data)
+        return this;
       }
     }
 }
