@@ -33,16 +33,14 @@ module.exports = function(pygmy,route,request){
         request.where(_self._path,params).then(_self._onPlural.call(_self,resolve),_onRequestError(reject));
       });
     },
-    create:function(model){
+    persist:function(model){
       var _self = this;
       return new RSVP.Promise(function(resolve,reject){
-        request.post(model.raw(),_self._path).then(_self._onUpdate.call(_self,resolve,model),_onRequestError(reject));
-      });
-    },
-    update:function(model){
-      var _self = this;
-      return new RSVP.Promise(function(resolve,reject){
-        request.put(model.raw(),_self._path).then(_self._onUpdate.call(_self,resolve,model),_onRequestError(reject));
+        if(model.raw().id){
+          request.post(model.raw(),_self._path).then(_self._onUpdate.call(_self,resolve,model),_onRequestError(reject));
+        }else{
+          request.put(model.raw(),_self._path).then(_self._onUpdate.call(_self,resolve,model),_onRequestError(reject));
+        }
       });
     },
     delete:function(id){

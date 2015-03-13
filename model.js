@@ -30,11 +30,7 @@ module.exports = function(route){
         return false;
       },
       save:function(){
-        if(this.id){
-          return route.update(this);
-        }else{
-          return route.create(this);
-        }
+        return route.persist(this);
       },
       delete:function(){
         return route.delete(_data.id);
