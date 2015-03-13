@@ -6,6 +6,7 @@ module.exports = function(token,id,secret,host){
     get:get,
     where:where,
     post:post,
+    delete:del,
     baseOptions:{
       host:'api.tradegecko.com',
       headers: {
@@ -14,24 +15,19 @@ module.exports = function(token,id,secret,host){
     }
   }
 
+  function del(path){
+    var _self = this;
+    return new RSVP.Promise(function(resolve,reject){
+      var req = createRequest.call(_self,{method:'DELETE',path:path},resolve,reject)
+      req.end();
+    });
+  }
+
   function where (route,params){
     route = route+'?'+serialize(params)
     return this.get({path:route});
   }
 
-  function get (params){
-    var _self = this;
-    return new RSVP.Promise(function(resolve,reject){
-      var req = createRequest(_.merge(_.merge({method: 'GET'},_self.baseOptions),params),resolve,reject)
-      req.end();
-      req.on('error', function(e){
-        reject()
-        //host not found
-        //conn refused
-      });
-    });
-  }
-//Buffer.byteLength(data)
   function post(data,path){
     return update.call(this,data,path,'POST');
   }
@@ -40,9 +36,17 @@ module.exports = function(token,id,secret,host){
     return update.call(this,data,path,'PUT');
   }
 
+  function get (params){
+    var _self = this;
+    return new RSVP.Promise(function(resolve,reject){
+      params.method = 'GET'
+      var req = createRequest.call(_self,params,resolve,reject)
+      req.end();
+    });
+  }
+
   function update(data,path,method){
     var _self = this;
-    console.log(this)
     return new RSVP.Promise(function(resolve,reject){
       var headers ={method: 'POST',
                     path:path,
@@ -51,23 +55,15 @@ module.exports = function(token,id,secret,host){
                       'Content-Type':'application/json'
                      }
                     }
-      console.log(_.merge(headers,_self.baseOptions));
-      var req = createRequest(_.merge(headers,_self.baseOptions),resolve,reject)
+      var req = createRequest.call(_self,headers,resolve,reject)
       req.write(JSON.stringify(data));
       req.end();
-      console.log('end')
-      req.on('error', function(e){
-        //host not found
-        //conn refused
-        console.log(e)
-      });
     });
   }
   function createRequest(params,resolve,reject){
-    return https.request(params, function(res) {
+    var req = https.request(_.merge(params,this.baseOptions), function(res) {
       var error
       var data = '';
-      console.log(res.statusCode)
       res.on('data', function(chunk) {
         data += chunk;
       });
@@ -107,12 +103,18 @@ module.exports = function(token,id,secret,host){
           reject({message:'Internal Server Error',statusCode:res.statusCode});
           break;
         case 503:
-          // Service Unavailable
+          reject({message:'Service Unavailable',statusCode:res.statusCode});
           break
       }
-
-
     });
+
+    req.on('error', function(e){
+      reject()
+      //host not found
+      //conn refused
+    });
+
+    return req;
   }
 
   function serialize(obj) {

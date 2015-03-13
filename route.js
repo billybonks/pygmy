@@ -1,8 +1,7 @@
 
 var RSVP = require('rsvp');
 var inflection = require('inflection');
-
-module.exports = function(route,request){
+module.exports = function(pygmy,route,request){
   var _onRequestError = function(reject){
     return function(error){
       reject(error)
@@ -10,6 +9,9 @@ module.exports = function(route,request){
   }
   return {
     _path:'/'+route,
+    lookupRelationship:function(route,method,parameter){
+      return pygmy[inflection.pluralize(route)][method](parameter)
+    },
     find:function(id){
       _self = this;
       return new RSVP.Promise(function(resolve,reject){
@@ -23,10 +25,7 @@ module.exports = function(route,request){
       });
     },
     findMany:function(ids){
-      _self = this;
-      return new RSVP.Promise(function(resolve,reject){
-        request.where(_self._path,{'ids':ids}).then(_self._onPlural.call(_self,resolve),_onRequestError(reject))
-      });
+      return this.where({'ids':ids})
     },
     where:function(params){
       _self = this;
@@ -45,7 +44,8 @@ module.exports = function(route,request){
         request.put(model.raw(),_path).then(_self._onUpdate.call(_self,resolve,model),_onRequestError(reject));
       });
     },
-    delete:function(){
+    delete:function(id){
+      return request.delete(this._path+'/'+id)
       //https://go.tradegecko.com/ajax/products/3542640
     },
     buildMany:function(objArray){
@@ -55,7 +55,8 @@ module.exports = function(route,request){
       })
     },
     build:function(params){
-      return require('./model')(this).build(params)
+      var model =  require('./model')(this).build(params)
+      return model
     },
     _onSingular:function(resolve){
       var _self = this;

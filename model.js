@@ -9,7 +9,16 @@ module.exports = function(route){
         return this;
       },
       get:function(attribute){
-        return _data[attribute];
+        var singular = attribute+'_id';
+        var plural = attribute+'_ids';
+        if(attribute in _data){
+          return _data[attribute];
+        }else if(singular in _data){
+          return route.lookupRelationship(attribute,"find",_data[singular]);
+        }else if(plural in _data){
+          return route.lookupRelationship(attribute,"findMany",_data[plural]);
+        }
+        return null;
       },
       set:function(attribute,value){
         _data[attribute] = value;
@@ -22,19 +31,19 @@ module.exports = function(route){
       },
       save:function(){
         if(this.id){
-          console.log('update')
           return route.update(this)
         }else{
           return route.create(this)
         }
       },
+      delete:function(){
+        return route.delete(_data.id);
+      },
       raw:function(){
         return _data;
       },
       merge:function(params){
-        console.log(params)
         _.merge(_data,params);
-        console.log(_data)
         return this;
       }
     }
