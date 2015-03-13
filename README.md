@@ -1,4 +1,4 @@
-# Pygmy [![Code Climate](https://codeclimate.com/github/billybonks/pygmy/badges/gpa.svg)](https://codeclimate.com/github/billybonks/pygmy)
+# Pygmy [![Code Climate](https://codeclimate.com/github/billybonks/pygmy/badges/gpa.svg)](https://codeclimate.com/github/billybonks/pygmy)  [![Travis-CI](https://travis-ci.org/billybonks/pygmy.svg)](https://travis-ci.org/billybonks/pygmy)
 
 The semi official nodejs module (employee maintained)
 
