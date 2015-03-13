@@ -1,4 +1,4 @@
-# Pygmy [![Code Climate](https://codeclimate.com/github/billybonks/pygmy/badges/gpa.svg)](https://codeclimate.com/github/billybonks/pygmy)  [![Travis-CI](https://travis-ci.org/billybonks/pygmy.svg)](https://travis-ci.org/billybonks/pygmy)
+# Pygmy [![Code Climate](https://codeclimate.com/github/billybonks/pygmy/badges/gpa.svg)](https://codeclimate.com/github/billybonks/pygmy) [![Build Status](https://semaphoreci.com/api/v1/projects/834e9db8-ff91-4811-9a5d-a7a68d53a00f/372955/badge.png)](https://semaphoreci.com/billybonks/pygmy)
 
 The semi official nodejs module (employee maintained)
 
