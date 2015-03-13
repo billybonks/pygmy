@@ -1,6 +1,7 @@
 var _ = require('lodash');
 var RSVP = require('rsvp');
 var https = require('https');
+// jshint undef:false
 module.exports = function(token,id,secret,host){
   return {
     get:get,
@@ -8,44 +9,44 @@ module.exports = function(token,id,secret,host){
     post:post,
     delete:del,
     baseOptions:{
-      host:'api.tradegecko.com',
+      host:host,
       headers: {
         Authorization: 'Bearer '+ token
       }
     }
-  }
-
-  function del(path){
+  };
+  
+  function del(path){// jshint ignore:line
     var _self = this;
     return new RSVP.Promise(function(resolve,reject){
-      var req = createRequest.call(_self,{method:'DELETE',path:path},resolve,reject)
+      var req = createRequest.call(_self,{method:'DELETE',path:path},resolve,reject);
       req.end();
     });
   }
 
-  function where (route,params){
-    route = route+'?'+serialize(params)
+  function where (route,params){// jshint ignore:line
+    route = route+'?'+serialize(params);
     return this.get({path:route});
   }
 
-  function post(data,path){
+  function post(data,path){// jshint ignore:line
     return update.call(this,data,path,'POST');
   }
-
-  function put(data,path){
+  // jshint undef:false
+  function put(data,path){// jshint ignore:line
     return update.call(this,data,path,'PUT');
   }
 
-  function get (params){
+  function get (params){// jshint ignore:line
     var _self = this;
     return new RSVP.Promise(function(resolve,reject){
-      params.method = 'GET'
-      var req = createRequest.call(_self,params,resolve,reject)
+      params.method = 'GET';
+      var req = createRequest.call(_self,params,resolve,reject);
       req.end();
     });
   }
 
-  function update(data,path,method){
+  function update(data,path){// jshint ignore:line
     var _self = this;
     return new RSVP.Promise(function(resolve,reject){
       var headers ={method: 'POST',
@@ -54,15 +55,14 @@ module.exports = function(token,id,secret,host){
                       'Content-Length':JSON.stringify(data).length,//Buffer.byteLength(data),
                       'Content-Type':'application/json'
                      }
-                    }
-      var req = createRequest.call(_self,headers,resolve,reject)
+                   };
+      var req = createRequest.call(_self,headers,resolve,reject);
       req.write(JSON.stringify(data));
       req.end();
     });
   }
-  function createRequest(params,resolve,reject){
+  function createRequest(params,resolve,reject){// jshint ignore:line
     var req = https.request(_.merge(params,this.baseOptions), function(res) {
-      var error
       var data = '';
       res.on('data', function(chunk) {
         data += chunk;
@@ -71,15 +71,15 @@ module.exports = function(token,id,secret,host){
         case 200:
           res.on('end',function(){
             resolve(JSON.parse(data));
-          })
+          });
           break;
         case 201:
           res.on('end',function(){
             resolve(JSON.parse(data));
-          })
+          });
           break;
         case 204:
-          resolve({message:'Success',statusCode:res.statusCode})
+          resolve({message:'Success',statusCode:res.statusCode});
           break;
         case 400:
           reject({message:'Bad Request',statusCode:res.statusCode});
@@ -92,24 +92,26 @@ module.exports = function(token,id,secret,host){
           break;
         case 404:
           reject({message:'Not Found',statusCode:res.statusCode});
+          break;
         case 414:
           reject({message:'Request-URI Too Long',statusCode:res.statusCode});
+          break;
         case 422:
           res.on('end',function(){
-            reject(_.merge({statusCode:res.statusCode},JSON.parse(data)))
-          })
+            reject(_.merge({statusCode:res.statusCode},JSON.parse(data)));
+          });
           break;
         case 500:
           reject({message:'Internal Server Error',statusCode:res.statusCode});
           break;
         case 503:
           reject({message:'Service Unavailable',statusCode:res.statusCode});
-          break
+          break;
       }
     });
 
     req.on('error', function(e){
-      reject()
+      reject(e);
       //host not found
       //conn refused
     });
@@ -117,12 +119,13 @@ module.exports = function(token,id,secret,host){
     return req;
   }
 
-  function serialize(obj) {
+  function serialize(obj) {// jshint ignore:line
     var str = [];
-    for(var p in obj)
+    for(var p in obj){
       if (obj.hasOwnProperty(p)) {
         str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
       }
+    }
     return str.join("&");
   }
-}
+};

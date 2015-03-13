@@ -1,5 +1,4 @@
 var _ = require('lodash');
-var RSVP = require('rsvp');
 module.exports = function(route){
     var _data={};
     return {
@@ -25,15 +24,16 @@ module.exports = function(route){
         this.isDirty = true;
       },
       isPersisted:function(){
-        if(this.get('id') && !this.isDirty)
+        if(this.get('id') && !this.isDirty){
           return true;
+        }
         return false;
       },
       save:function(){
         if(this.id){
-          return route.update(this)
+          return route.update(this);
         }else{
-          return route.create(this)
+          return route.create(this);
         }
       },
       delete:function(){
@@ -46,5 +46,5 @@ module.exports = function(route){
         _.merge(_data,params);
         return this;
       }
-    }
-}
+    };
+};
