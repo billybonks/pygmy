@@ -1,6 +1,6 @@
 # Pygmy [![Code Climate](https://codeclimate.com/github/billybonks/pygmy/badges/gpa.svg)](https://codeclimate.com/github/billybonks/pygmy)
 
-The official nodejs module
+The semi official nodejs module (employee maintained)
 
 ##Introduction
 
@@ -75,7 +75,7 @@ pygmy.products.find(id).then(function(product){
 })
 ```
 
-#Errors
+##Errors
 Errors always return in the format
 
 `{message:message,statusCode:statusCode}`
@@ -140,5 +140,5 @@ switch(res.statusCode){
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
 
-##Adding a missing route
+###Missing route?
  Just add `pygmy['addresses'] = routes.build(pygmy,'addresses');` where addresses is the endpoint name shown in api (they are always plural), to pygmy.js.
