@@ -4,7 +4,7 @@
   "description": "Wrapper library for tradegecko api",
   "main": "pygmy.js",
   "scripts": {
-    "test": "test.js"
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
@@ -20,7 +20,9 @@
     "inflection": "^1.6.0",
     "lodash": "^3.4.0",
     "request": "^2.53.0",
-    "rsvp": "^3.0.17",
-    "unirest": "^0.4.0"
+    "rsvp": "^3.0.17"
+  },
+  "devDependencies": {
+    "mocha-jshint": "^1.0.0"
   }
 }
